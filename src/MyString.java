@@ -1,9 +1,17 @@
 import java.io.Serializable;
 
 public class MyString extends Object implements Serializable, Comparable<String>, CharSequence {
+
+    private int length;
+
+    public MyString(){
+        this.length = 0;
+    }
+
+
     @Override
     public int length() {
-        return 0;
+        return length;
     }
 
     @Override

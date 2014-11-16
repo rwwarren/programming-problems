@@ -1,15 +1,15 @@
 
-public class MyBinaryTree {
+public class MyBinaryTree<E> {
 
-    public void depthFirstSearch(){
-
-    }
-
-    public void breadthFirstSearch(){
+    public void depthFirstSearch(E toFind){
 
     }
 
-    public void dikjstras(){
+    public void breadthFirstSearch(E toFind){
+
+    }
+
+    public void dikjstras(E toFind){
 
     }
 

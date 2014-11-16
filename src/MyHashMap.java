@@ -6,6 +6,9 @@ import java.util.Set;
 
 public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
 
+    private double load;
+    private K[] elements;
+
     protected MyHashMap() {
         super();
     }

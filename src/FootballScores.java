@@ -3,4 +3,8 @@
 //return ways that score could be made
 public class FootballScores {
 
+    public int getWays(int finalScore){
+        return 0;
+    }
+
 }
