@@ -23,4 +23,9 @@ public class MyStringTest {
     public void testCompareTo() throws Exception {
 
     }
+
+    @Test
+    public void testToString() throws Exception {
+        MyString testString = new MyString();
+    }
 }
