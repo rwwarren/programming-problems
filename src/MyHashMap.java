@@ -1,21 +1,40 @@
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
+public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Cloneable, Serializable {
 
+    private static int DEFAULT_ELEMENTS = 10;
     private double load;
-    private K[] elements;
+    private Entry<K, V>[] elements;
 
     protected MyHashMap() {
-        super();
+        this(DEFAULT_ELEMENTS);
+    }
+
+//    static class Entry<K, V> {
+//        K key;
+//        V value;
+//        Entry<K, V> next;
+//
+//        public Entry(K key, V value, Entry<K, V> next) {
+//            this.key = key;
+//            this.value = value;
+//            this.next = next;
+//        }
+//    }
+
+    @SuppressWarnings("unchecked")
+    public MyHashMap(int size) {
+        elements = new Entry[size];
     }
 
     @Override
     public int size() {
-        return super.size();
+        return elements.length;
     }
 
     @Override
@@ -60,7 +79,12 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
 
     @Override
     public Set<K> keySet() {
-        return super.keySet();
+        Set<K> keys = new HashSet<K>(elements.length);
+        for (Entry<K, V> element : elements) {
+            keys.add(element.getKey());
+        }
+
+        return keys;
     }
 
     @Override
@@ -96,5 +120,9 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    private int hash(){
+        return 0;
     }
 }
