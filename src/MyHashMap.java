@@ -10,6 +10,7 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
     private static int DEFAULT_ELEMENTS = 10;
     private double load;
     private Entry<K, V>[] elements;
+    private int size;
 
     protected MyHashMap() {
         this(DEFAULT_ELEMENTS);
@@ -29,17 +30,18 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
 
     @SuppressWarnings("unchecked")
     public MyHashMap(int size) {
+        this.size = 0;
         elements = new Entry[size];
     }
 
     @Override
     public int size() {
-        return elements.length;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return super.isEmpty();
+        return size == 0;
     }
 
     @Override
