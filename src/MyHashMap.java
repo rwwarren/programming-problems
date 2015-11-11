@@ -1,15 +1,17 @@
 import java.io.Serializable;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Cloneable, Serializable {
 
     private static int DEFAULT_ELEMENTS = 10;
     private static double MAX_LOAD = .75;
-//    private double load;
+    //    private double load;
     private HashEntry<K, V>[] elements;
     private int size;
 
@@ -18,14 +20,19 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
         V value;
         HashEntry<K, V> next;
 
+        public HashEntry(K key, V value) {
+            this(key, value, null);
+        }
+
         public HashEntry(K key, V value, HashEntry<K, V> next) {
             this.key = key;
             this.value = value;
             this.next = next;
         }
 
-        public void setNext(HashEntry<K, V> next) {
+        public HashEntry<K, V> setNext(HashEntry<K, V> next) {
             this.next = next;
+            return next;
         }
 
         public K getKey() {
@@ -38,6 +45,38 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
 
         public HashEntry<K, V> getNext() {
             return next;
+        }
+
+        public boolean hasNext() {
+            return next != null;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            HashEntry<?, ?> hashEntry = (HashEntry<?, ?>) o;
+            return Objects.equals(key, hashEntry.key) &&
+                    Objects.equals(value, hashEntry.value) &&
+                    Objects.equals(next, hashEntry.next);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value, next);
+        }
+
+        @Override
+        public String toString() {
+            return "HashEntry{" +
+                    "key=" + key +
+                    ", value=" + value +
+                    ", next=" + next +
+                    '}';
         }
     }
 
@@ -65,8 +104,8 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
     public boolean containsValue(Object o) {
         for (HashEntry<K, V> element : elements) {
             HashEntry<K, V> current = element;
-            while(current != null){
-                if(current.getValue().equals(o)){
+            while (current != null) {
+                if (current.getValue().equals(o)) {
                     return true;
                 }
                 current = current.getNext();
@@ -85,8 +124,8 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
         int hashed = hash(o);
         int location = hashed % elements.length;
         HashEntry<K, V> element = elements[location];
-        while(element != null){
-            if(element.getKey().equals(o)){
+        while (element != null) {
+            if (element.getKey().equals(o)) {
                 return element.getValue();
             }
             element = element.getNext();
@@ -96,13 +135,33 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
 
     @Override
     public V put(K k, V v) {
-        int hashed = hash(k);
-        int location = hashed % elements.length;
         double load = (double) size / (double) elements.length;
-        if(load > MAX_LOAD){
+        if (load > MAX_LOAD) {
             doubleArray();
         }
-        return super.put(k, v);
+        int hashed = hash(k);
+        int location = hashed % elements.length;
+        HashEntry<K, V> elementList = elements[location];
+        if (elementList != null) {
+            if (elementList.getKey().equals(k)) {
+                elementList.setValue(v);
+                return v;
+            }
+            while (elementList.hasNext()) {
+                if (elementList.getKey().equals(k)) {
+                    elementList.setValue(v);
+                    return v;
+                }
+                elementList = elementList.getNext();
+            }
+            elementList = elementList.setNext(new HashEntry<K, V>(k, v));
+            size++;
+        } else {
+            elements[location] = new HashEntry<K, V>(k, v);
+            elementList = elements[location];
+            size++;
+        }
+        return elementList.getValue();
     }
 
     @Override
@@ -151,7 +210,10 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
 
     @Override
     public String toString() {
-        return super.toString();
+        return "MyHashMap{" +
+                "elements=" + Arrays.toString(elements) +
+                ", size=" + size +
+                '}';
     }
 
     @Override
@@ -164,12 +226,12 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
         return super.clone();
     }
 
-    private int hash(Object o){
-        return 0;
+    private int hash(Object o) {
+        return 31 * o.hashCode();
     }
 
     @SuppressWarnings("unchecked")
-    private void doubleArray(){
+    private void doubleArray() {
         HashEntry<K, V>[] replacementElements = new HashEntry[elements.length * 2];
         //rehash
         elements = replacementElements;
