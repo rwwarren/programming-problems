@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,7 +16,7 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
     private HashEntry<K, V>[] elements;
     private int size;
 
-    static class HashEntry<K, V> {
+    static class HashEntry<K, V> implements Entry<K, V> {
         K key;
         V value;
         HashEntry<K, V> next;
@@ -51,8 +52,9 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
             return next != null;
         }
 
-        public void setValue(V value) {
+        public V setValue(V value) {
             this.value = value;
+            return value;
         }
 
         @Override
@@ -183,29 +185,51 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
     public Set<K> keySet() {
         Set<K> keys = new HashSet<K>(elements.length);
         for (HashEntry<K, V> element : elements) {
-            keys.add(element.getKey());
+            while (element != null) {
+                keys.add(element.getKey());
+                element = element.getNext();
+            }
         }
         return keys;
     }
 
     @Override
     public Collection<V> values() {
-        return super.values();
+        Collection<V> values = new ArrayList<V>(elements.length);
+        for (HashEntry<K, V> element : elements) {
+            while (element != null) {
+                values.add(element.getValue());
+                element = element.getNext();
+            }
+        }
+        return values;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return null;
+        Set<Entry<K, V>> entries = new HashSet<Entry<K, V>>();
+        for (HashEntry<K, V> element : elements) {
+            while (element != null) {
+                entries.add(element);
+                element = element.getNext();
+            }
+        }
+        return entries;
     }
 
     @Override
     public boolean equals(Object o) {
-        return super.equals(o);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MyHashMap<?, ?> myHashMap = (MyHashMap<?, ?>) o;
+        return size == myHashMap.size &&
+                Arrays.equals(elements, myHashMap.elements);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(super.hashCode(), elements, size);
     }
 
     @Override
