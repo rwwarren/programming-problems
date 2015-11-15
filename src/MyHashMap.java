@@ -15,13 +15,7 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
     private HashEntry<K, V>[] elements;
     private int size;
 
-    //    interface Hashable {
-//        @Override
-//        public int hash(Object o);
-//
-//    }
     static class HashEntry<K, V> implements Entry<K, V> {
-        //    static class HashEntry<K, V> implements Entry<K, V>, Hashable {
         K key;
         V value;
         HashEntry<K, V> next;
@@ -75,7 +69,6 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
         @Override
         public int hashCode() {
             return Objects.hash(key);
-//            return Objects.hash(key, value);
         }
 
         @Override
@@ -179,7 +172,6 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
         V result = null;
         HashEntry<K, V> element = elements[location];
         if (element != null && element.getKey().equals(o)) {
-            //TODO
             result = element.getValue();
             if (!element.hasNext()) {
                 elements[location] = null;
