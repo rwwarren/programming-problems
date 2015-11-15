@@ -262,26 +262,13 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
 
     @SuppressWarnings("unchecked")
     private void doubleArray() {
-        HashEntry<K, V>[] replacementElements = new HashEntry[elements.length * 2];
-        for (HashEntry<K, V> element : elements) {
-            while (element != null) {
-                HashEntry<K, V> currentElement = element;
-                element = element.getNext();
-                int hashed = hash(currentElement.getValue());
-                int location = hashed % replacementElements.length;
-                HashEntry<K, V> rehashedElement = replacementElements[location];
-                if (rehashedElement == null) {
-                    rehashedElement = new HashEntry<K, V>(currentElement.getKey(), currentElement.getValue());
-                    replacementElements[location] = rehashedElement;
-                } else {
-                    while (rehashedElement != null && rehashedElement.hasNext()) {
-                        rehashedElement = rehashedElement.getNext();
-                    }
-                    rehashedElement.setNext(new HashEntry<K, V>(currentElement.getKey(), currentElement.getValue()));
-                }
-            }
+        Set<Entry<K, V>> entries = entrySet();
+        elements = new HashEntry[elements.length * 2];
+        int oldSize = size;
+        for (Entry<K, V> entry : entries) {
+            put(entry.getKey(), entry.getValue());
         }
-        elements = replacementElements;
+        size = oldSize;
     }
 
 }
