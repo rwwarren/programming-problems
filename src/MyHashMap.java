@@ -177,9 +177,24 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
         int hashed = hash(o);
         int location = hashed % elements.length;
         V result = null;
-        if(elements[location].equals(o)){
+        HashEntry<K, V> element = elements[location];
+        if (element != null && element.getKey().equals(o)) {
             //TODO
+            result = element.getValue();
+            if (!element.hasNext()) {
+                elements[location] = null;
+            } else {
+                elements[location] = element.getNext();
+            }
             size--;
+        } else if (element != null) {
+            while (element.hasNext()) {
+                if (element.getNext().getKey().equals(o)) {
+                    result = element.getNext().getValue();
+                    element.setNext(element.getNext().getNext());
+                    size--;
+                }
+            }
         }
         return result;
     }
