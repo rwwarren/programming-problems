@@ -78,5 +78,34 @@ public class MyHashMapTest {
         assertThat(myHashMap.isEmpty(), equalTo(false));
     }
 
+    @Test
+    public void testRemove() {
+        MyHashMap<String, Integer> myHashMap = new MyHashMap<String, Integer>();
+        String key = "test";
+        int value = 1;
+        myHashMap.put(key, value);
+        myHashMap.remove(key);
+
+        Integer result = myHashMap.get(key);
+        assertThat(result, equalTo(null));
+        assertThat(myHashMap.size(), equalTo(0));
+        assertThat(myHashMap.isEmpty(), equalTo(true));
+    }
+
+    @Test
+    public void testClear(){
+        MyHashMap<String, Integer> myHashMap = new MyHashMap<String, Integer>();
+        String key = "test";
+        String key2 = "test2";
+        int value = 1;
+        int newValue = 2;
+        myHashMap.put(key, value);
+        myHashMap.put(key2, newValue);
+        myHashMap.clear();
+        assertThat(myHashMap.isEmpty(), equalTo(true));
+        assertThat(myHashMap.size(), equalTo(0));
+    }
+
+
 
 }

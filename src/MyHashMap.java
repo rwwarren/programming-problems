@@ -174,17 +174,29 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clo
 
     @Override
     public V remove(Object o) {
-        return super.remove(o);
+        int hashed = hash(o);
+        int location = hashed % elements.length;
+        V result = null;
+        if(elements[location].equals(o)){
+            //TODO
+            size--;
+        }
+        return result;
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
-        super.putAll(map);
+        Set<? extends Entry<? extends K, ? extends V>> entries = map.entrySet();
+        for (Entry<? extends K, ? extends V> entry : entries) {
+            put(entry.getKey(), entry.getValue());
+        }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void clear() {
-        super.clear();
+        elements = new HashEntry[elements.length];
+        size = 0;
     }
 
     @Override
