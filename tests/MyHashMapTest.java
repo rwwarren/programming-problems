@@ -170,6 +170,4 @@ public class MyHashMapTest {
         assertThat(myHashMap.size(), equalTo(0));
     }
 
-
-
 }
