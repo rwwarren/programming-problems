@@ -5,6 +5,8 @@ import java.util.Set;
 
 //There is a game called football where there is a score
 //return ways that score could be made
+
+//This is similar to the combinations of dollar value
 public class FootballScores {
 
     private static Integer[] scores = {2, 3, 6, 7, 8};
