@@ -1,3 +1,5 @@
+package com.wrixton.programming;
+
 import java.io.Serializable;
 
 public class MyString extends Object implements Serializable, Comparable<String>, CharSequence {

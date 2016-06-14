@@ -1,3 +1,6 @@
+package com.wrixton.programming;
+
+import com.wrixton.programming.FootballScores;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;

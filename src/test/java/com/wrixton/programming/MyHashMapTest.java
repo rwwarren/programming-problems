@@ -1,3 +1,6 @@
+package com.wrixton.programming;
+
+import com.wrixton.programming.MyHashMap;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

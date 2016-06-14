@@ -1,3 +1,4 @@
+package com.wrixton.programming;
 
 public class MyBinaryTree<E> {
 

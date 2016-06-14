@@ -1,6 +1,7 @@
-import org.junit.Test;
+package com.wrixton.programming;
 
-import static org.junit.Assert.*;
+import com.wrixton.programming.MyString;
+import org.junit.Test;
 
 public class MyStringTest {
 
