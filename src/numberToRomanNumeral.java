@@ -22,7 +22,7 @@ public class numberToRomanNumeral {
         numeralMap.put(100, "C");
         numeralMap.put(400, "CD");
         numeralMap.put(500, "D");
-        numeralMap.put(900, "DM");
+        numeralMap.put(900, "CM");
         numeralMap.put(1000, "M");
         printNumerals(arr);
 
@@ -47,7 +47,6 @@ public class numberToRomanNumeral {
                 for(int j = 0; j < times; j++){
                     result += numeralMap.get(currentKey);
                     current -= currentKey;
-
                 }
             }
         }
